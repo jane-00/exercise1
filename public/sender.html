@@ -23,12 +23,8 @@
         integrity="sha512-0f7Ahsuvr+/P2btTY4mZIw9Vl23lS6LY/Y7amdkmUg2dqsUF+cTe4QjWvj/NIBHJoGksOiqndKQuI9yzn2hB0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/socket.io/socket.io.js"></script>
+
     <script>
-        function myFunction() {
-            console.log("send")
-        }
-    </script>
-    <script type="module">
 
 
         const $myCamera = document.getElementById('myCamera');
@@ -47,7 +43,10 @@
 
 
 
-
+        function myFunction() {
+            peer.send("message")
+            console.log("send")
+        }
 
         const init = async () => {
             initSocket();
