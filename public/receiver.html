@@ -25,7 +25,7 @@
         const $otherCamera = document.getElementById('otherCamera');
 
         let socket;
-        let peer
+        let peer;
         let peerConnection;
 
         const servers = {
@@ -64,6 +64,10 @@
             peer.on('stream', stream => {
                 $otherCamera.srcObject = stream;
             });
+            peer.on('data', data => {
+                // got a data channel message
+                console.log('got a message from peer1: ' + data)
+            })
         };
 
 
