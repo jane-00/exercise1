@@ -16,19 +16,13 @@
 <body>
     <h1>Sender</h1>
     <button onclick="myFunction()">Send message</button>
-    <button onclick="myConnect()">Connect</button>
 
-    <!--<label for="peerSelect">Peer: </label><select id="peerSelect"></select>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"
         integrity="sha512-0f7Ahsuvr+/P2btTY4mZIw9Vl23lS6LY/Y7amdkmUg2dqsUF+cTe4QjWvj/NIBHJoGksOiqndKQuI9yzn2hB0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
-
-
-
-        //   const $peerSelect = document.getElementById('peerSelect');
 
         let socket;
 
@@ -54,8 +48,6 @@
 
         const init = async () => {
             initSocket();
-            //  $peerSelect.addEventListener('input', callSelectedPeer);
-
         };
 
         const initSocket = () => {
@@ -70,47 +62,21 @@
             socket.on('connect', () => {
                 console.log(socket.id);
             });
-            // socket.on('clients', updatePeerList);
 
             socket.on('signal', async (myId, signal, peerId) => {
                 console.log(`Received signal from ${peerId}`);
                 console.log(signal);
                 peer.signal(signal);
             });
-        };
 
-        // const updatePeerList = (clients) => {
-        //     $peerSelect.innerHTML = '<option value="none">--- Select Peer To Call ---</option>';
-        //     for (const clientId in clients) {
-        //         const isMyOwnId = (clientId === socket.id);
-        //         if (clients.hasOwnProperty(clientId) && !isMyOwnId) {
-        //             const client = clients[clientId];
-        //             const $option = document.createElement('option');
-        //             $option.value = clientId;
-        //             $option.textContent = clientId;
-        //             $peerSelect.appendChild($option);
-        //         }
-        //     }
-        // };
+             callPeer(targetSocketId);
+              console.log("target socket id: " + targetSocketId);
+        };
 
         function myFunction() {
             peer.send("message")
             console.log("send")
         };
-        function myConnect() {
-            callPeer(targetSocketId);
-            console.log("target socket id: " + targetSocketId);
-        }
-
-        // const callSelectedPeer = () => {
-        //     if ($peerSelect.value === 'none') {
-        //         // TODO: disconnect
-        //         return;
-        //     }
-        //     console.log('call selected peer', $peerSelect.value);
-
-        //     callPeer($peerSelect.value);
-        // };
 
         const callPeer = async (peerId) => {
             peer = new SimplePeer({ initiator: true });
