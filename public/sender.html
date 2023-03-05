@@ -15,8 +15,8 @@
 
 <body>
     <h1>Sender</h1>
-    <button onclick="myFunction()">Click me</button>
-
+    <button onclick="myFunction()">Send message</button>
+    <button onclick="myConnect()">Connect</button>
 
     <label for="peerSelect">Peer: </label><select id="peerSelect"></select>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"
@@ -25,7 +25,7 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
-
+        //https://192.168.0.194/sender.html?id=iDmpyPEZMvul974DAAAP
 
 
         const $peerSelect = document.getElementById('peerSelect');
@@ -33,7 +33,8 @@
         let socket;
 
         let peerConnection;
-        let peer
+        let peer;
+        let targetSocketId;
 
         const servers = {
             iceServers: [{
@@ -48,6 +49,16 @@
             console.log("send")
         }
 
+
+
+        const getUrlParameter = name => {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? false : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+
         const init = async () => {
             initSocket();
             $peerSelect.addEventListener('input', callSelectedPeer);
@@ -55,6 +66,8 @@
         };
 
         const initSocket = () => {
+            targetSocketId = getUrlParameter('id');
+            
             socket = io.connect('/');
             socket.on('connect', () => {
                 console.log(socket.id);
@@ -81,6 +94,11 @@
                 }
             }
         };
+
+        function myConnect() {
+            callPeer(targetSocketId);
+            console.log("target socket id: " + targetSocketId);
+        }
 
         const callSelectedPeer = () => {
             if ($peerSelect.value === 'none') {

@@ -12,7 +12,7 @@
 
 <body>
     <h1>Receiver</h1>
-
+    <a class="url"></a>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"
         integrity="sha512-0f7Ahsuvr+/P2btTY4mZIw9Vl23lS6LY/Y7amdkmUg2dqsUF+cTe4QjWvj/NIBHJoGksOiqndKQuI9yzn2hB0g=="
@@ -23,6 +23,7 @@
         let socket;
         let peer;
         let peerConnection;
+        let $url = document.querySelector(`.url`);
 
         const servers = {
             iceServers: [{
@@ -39,6 +40,10 @@
             socket = io.connect(`/`);
             socket.on(`connect`, () => {
                 console.log(socket.id);
+                const url = `${new URL(`/sender.html?id=${socket.id}`, window.location)}`;
+                $url.textContent = url;
+                $url.setAttribute('href', url);
+                console.log(url)
             });
             socket.on('signal', async (myId, signal, peerId) => {
                 console.log(`Received signal from ${peerId}`);
