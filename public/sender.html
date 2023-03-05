@@ -17,7 +17,7 @@
     <h1>Sender</h1>
     <button onclick="myFunction()">Click me</button>
 
-    <video id="myCamera" playsinline autoplay muted></video>
+
     <label for="peerSelect">Peer: </label><select id="peerSelect"></select>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"
         integrity="sha512-0f7Ahsuvr+/P2btTY4mZIw9Vl23lS6LY/Y7amdkmUg2dqsUF+cTe4QjWvj/NIBHJoGksOiqndKQuI9yzn2hB0g=="
@@ -27,11 +27,11 @@
     <script>
 
 
-        const $myCamera = document.getElementById('myCamera');
+
         const $peerSelect = document.getElementById('peerSelect');
 
         let socket;
-        let myStream;
+
         let peerConnection;
         let peer
 
@@ -51,9 +51,7 @@
         const init = async () => {
             initSocket();
             $peerSelect.addEventListener('input', callSelectedPeer);
-            const constraints = { audio: true, video: { width: 1280, height: 720 } };
-            myStream = await navigator.mediaDevices.getUserMedia(constraints);
-            $myCamera.srcObject = myStream;
+
         };
 
         const initSocket = () => {
@@ -95,7 +93,7 @@
         };
 
         const callPeer = async (peerId) => {
-            peer = new SimplePeer({ initiator: true, stream: myStream });
+            peer = new SimplePeer({ initiator: true });
             peer.on('signal', data => {
                 socket.emit('signal', peerId, data);
             });
